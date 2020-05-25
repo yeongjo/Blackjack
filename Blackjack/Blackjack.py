@@ -74,18 +74,44 @@ class BlackJack:
         else:
             self.betMoney -= 50
 
+    def pressedB10(self):
+        self.betMoney += 10
+        if self.betMoney <= self.playerMoney:
+            self.LbetMoney.configure(text="$"+str(self.betMoney))
+            self.playerMoney -=10
+            self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
+            self.Deal["state"] = "active"
+            self.Deal["bg"] = "white"
+            PlaySound('sounds/chip.wav', SND_FILENAME)
+        else:
+            self.betMoney -= 10
+
+    def pressedB1(self):
+        self.betMoney += 1
+        if self.betMoney <= self.playerMoney:
+            self.LbetMoney.configure(text="$"+str(self.betMoney))
+            self.playerMoney -=1
+            self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
+            self.Deal["state"] = "active"
+            self.Deal["bg"] = "white"
+            PlaySound('sounds/chip.wav', SND_FILENAME)
+        else:
+            self.betMoney -= 1
+
     def deal(self):
         self.player.reset()
         self.dealer.reset() #카드 덱 52장 셔플링 0,1,,.51
         self.cardDeck = [i for i in range (52)]
         random.shuffle(self.cardDeck)
         self.deckN = 0
+
         self.hitPlayer(0)
         self.hitDealerDown()
         self.hitPlayer(1)
         self.hitDealer(0)
         self.nCardsPlayer =1
         self.nCardsDealer =0
+
         self.B50['state'] = 'disabled'
         self.B50['bg'] = 'gray'
         self.B10['state'] = 'disabled'
@@ -110,6 +136,31 @@ class BlackJack:
         self.hitPlayer(self.nCardsPlayer)
         if self.player.value() > 21:
             self.checkWinner()
+    
+    def pressedStay(self):
+        self.nCardsPlayer += 1
+        self.hitPlayer(self.nCardsPlayer)
+        if self.player.value() > 21:
+            self.checkWinner()
+
+    def pressedDeal(self):
+        self.nCardsPlayer += 1
+        self.hitPlayer(self.nCardsPlayer)
+        if self.player.value() > 21:
+            self.checkWinner()
+
+    def pressedAgain(self):
+        self.Lstatus.configure(text="")
+        self.LplayerMoney.configure(text="You have $1000")
+        self.betMoney = 0
+        self.betMoney = 0
+        self.playerMoney = 1000
+        self.nCardsDealer = 0
+        self.nCardsPlayer = 0
+        self.LcardsPlayer = []
+        self.LcardsDealer = []
+        self.deckN = 0
+        self.deal()
 
     def checkWinner(self):
         #뒤집힌 카드를 다시 그린다.
