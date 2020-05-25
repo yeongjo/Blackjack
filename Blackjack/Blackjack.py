@@ -151,7 +151,8 @@ class BlackJack:
         self.Deal['state'] = 'disabled'
         self.Deal['bg'] = 'gray'
         self.Again['state'] = 'active'
-        self.Again['bg'] = 'white'
+        self.Again['bg'] = 'white'
+
 BlackJack()
 
 
