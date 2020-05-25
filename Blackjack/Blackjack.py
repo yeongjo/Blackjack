@@ -58,7 +58,7 @@ class BlackJack:
         self.LplayerPts = Label(text="",width=2,height=1,font=self.fontstyle2,bg="green",fg="white")
         self.LplayerPts.place(x=300,y=300)
         self.LdealerPts = Label(text="",width=2,height=1,font=self.fontstyle2,bg="green",fg="white")
-        self.LdealerPts.place(x=300,y=100)
+        self.LdealerPts.place(x=300,y=-100)
         self.Lstatus = Label(text="",width=15,height=1,font=self.fontstyle,bg="green",fg="white")
         self.Lstatus.place(x=500,y=300)
 
@@ -108,7 +108,7 @@ class BlackJack:
         self.hitPlayer(0)
         self.hitDealerDown()
         self.hitPlayer(1)
-        self.hitDealer(0)
+        self.hitDealer(1)
         self.nCardsPlayer =1
         self.nCardsDealer =0
 
@@ -118,6 +118,13 @@ class BlackJack:
         self.B10['bg'] = 'gray'
         self.B1['state'] = 'disabled'
         self.B1['bg'] = 'gray'
+
+        self.Hit['state'] = 'active'
+        self.Hit['bg'] = 'white'
+        self.Stay['state'] = 'active'
+        self.Stay['bg'] = 'white'
+        self.Deal['state'] = 'disabled'
+        self.Deal['bg'] = 'gray'
 
     def hitPlayer(self, n):
         newCard = Card(self.cardDeck[self.deckN])
@@ -129,7 +136,29 @@ class BlackJack:
         self.LcardsPlayer[self.player.inHand() - 1].image = p
         self.LcardsPlayer[self.player.inHand() - 1].place(x=250+n*30,y=350)
         self.LplayerPts.configure(text=str(self.player.value()))
+
+    def hitDealerDown(self):
+        newCard = Card(self.cardDeck[self.deckN])
+        self.deckN += 1
+        self.dealer.addCard(newCard)
+        p = PhotoImage(file="cards/b2fv.png")
+        self.LcardsDealer.append(Label(self.window,image=p))
+        #파이썬은 라벨 이미지 레퍼런스를 갖고 있어야 이미지가 보임
+        self.LcardsDealer[self.dealer.inHand() - 1].image = p
+        self.LcardsDealer[self.dealer.inHand() - 1].place(x=250+0*30,y=170)
+        self.LdealerPts.configure(text=str(self.dealer.value()))
         PlaySound('sounds/cardFlip1.wav', SND_FILENAME)
+
+    def hitDealer(self, n):
+        newCard = Card(self.cardDeck[self.deckN])
+        self.deckN += 1
+        self.dealer.addCard(newCard)
+        p = PhotoImage(file="cards/"+newCard.filename())
+        self.LcardsDealer.append(Label(self.window,image=p))
+        #파이썬은 라벨 이미지 레퍼런스를 갖고 있어야 이미지가 보임
+        self.LcardsDealer[self.dealer.inHand() - 1].image = p
+        self.LcardsDealer[self.dealer.inHand() - 1].place(x=250+n*30,y=170)
+        self.LdealerPts.configure(text=str(self.dealer.value()))
 
     def pressedHit(self):
         self.nCardsPlayer += 1
@@ -138,29 +167,26 @@ class BlackJack:
             self.checkWinner()
     
     def pressedStay(self):
-        self.nCardsPlayer += 1
-        self.hitPlayer(self.nCardsPlayer)
-        if self.player.value() > 21:
-            self.checkWinner()
+        self.LdealerPts.place(x=300,y=100)
+        self.checkWinner()
+        i = 2
+        while self.dealer.value() < 17:
+            self.hitDealer(i)
 
     def pressedDeal(self):
-        self.nCardsPlayer += 1
-        self.hitPlayer(self.nCardsPlayer)
-        if self.player.value() > 21:
-            self.checkWinner()
+        self.deal()
+
 
     def pressedAgain(self):
         self.Lstatus.configure(text="")
-        self.LplayerMoney.configure(text="You have $1000")
+        self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
         self.betMoney = 0
         self.betMoney = 0
-        self.playerMoney = 1000
         self.nCardsDealer = 0
         self.nCardsPlayer = 0
         self.LcardsPlayer = []
         self.LcardsDealer = []
         self.deckN = 0
-        self.deal()
 
     def checkWinner(self):
         #뒤집힌 카드를 다시 그린다.
@@ -186,15 +212,12 @@ class BlackJack:
             self.Lstatus.configure(text="Sorry you lost!")
             PlaySound('sounds/wrong.wav', SND_FILENAME)
 
-        self.betMoney = 0
-        self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
-        self.LbetMoney.configure(text="$"+str(self.betMoney))
-        self.B50['state'] = 'disabled'
-        self.B50['bg'] = 'gray'
-        self.B10['state'] = 'disabled'
-        self.B10['bg'] = 'gray'
-        self.B1['state'] = 'disabled'
-        self.B1['bg'] = 'gray'
+        self.B50['state'] = 'active'
+        self.B50['bg'] = 'white'
+        self.B10['state'] = 'active'
+        self.B10['bg'] = 'white'
+        self.B1['state'] = 'active'
+        self.B1['bg'] = 'white'
         self.Hit['state'] = 'disabled'
         self.Hit['bg'] = 'gray'
         self.Stay['state'] = 'disabled'
