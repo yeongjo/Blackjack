@@ -168,10 +168,12 @@ class BlackJack:
     
     def pressedStay(self):
         self.LdealerPts.place(x=300,y=100)
-        self.checkWinner()
         i = 2
         while self.dealer.value() < 17:
             self.hitDealer(i)
+            i += 1
+        self.checkWinner()
+
 
     def pressedDeal(self):
         self.deal()
@@ -184,9 +186,32 @@ class BlackJack:
         self.betMoney = 0
         self.nCardsDealer = 0
         self.nCardsPlayer = 0
-        self.LcardsPlayer = []
+        for t in self.LcardsPlayer:
+            t.destroy()
+        for t in self.LcardsDealer:
+            t.destroy()
         self.LcardsDealer = []
+        self.LcardsPlayer = []
         self.deckN = 0
+
+        self.LdealerPts.place(x=300,y=-100)
+        self.LplayerPts.configure(text="0")
+
+        self.B50['state'] = 'active'
+        self.B50['bg'] = 'white'
+        self.B10['state'] = 'active'
+        self.B10['bg'] = 'white'
+        self.B1['state'] = 'active'
+        self.B1['bg'] = 'white'
+        self.Hit['state'] = 'disabled'
+        self.Hit['bg'] = 'gray'
+        self.Stay['state'] = 'disabled'
+        self.Stay['bg'] = 'gray'
+        self.Deal['state'] = 'disabled'
+        self.Deal['bg'] = 'gray'
+        self.Again['state'] = 'disabled'
+        self.Again['bg'] = 'gray'
+
 
     def checkWinner(self):
         #뒤집힌 카드를 다시 그린다.
@@ -205,6 +230,7 @@ class BlackJack:
             self.Lstatus.configure(text="Push")
             self.playerMoney += self.betMoney
         elif self.dealer.value() < self.player.value():
+            print(self.dealer.value(),",",self.player.value())
             self.Lstatus.configure(text="You won!!")
             self.playerMoney += self.betMoney*2
             PlaySound('sounds/win.wav', SND_FILENAME)
@@ -212,12 +238,12 @@ class BlackJack:
             self.Lstatus.configure(text="Sorry you lost!")
             PlaySound('sounds/wrong.wav', SND_FILENAME)
 
-        self.B50['state'] = 'active'
-        self.B50['bg'] = 'white'
-        self.B10['state'] = 'active'
-        self.B10['bg'] = 'white'
-        self.B1['state'] = 'active'
-        self.B1['bg'] = 'white'
+        self.B50['state'] = 'disabled'
+        self.B50['bg'] = 'gray'
+        self.B10['state'] = 'disabled'
+        self.B10['bg'] = 'gray'
+        self.B1['state'] = 'disabled'
+        self.B1['bg'] = 'gray'
         self.Hit['state'] = 'disabled'
         self.Hit['bg'] = 'gray'
         self.Stay['state'] = 'disabled'
