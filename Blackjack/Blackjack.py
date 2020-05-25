@@ -50,30 +50,6 @@ class BlackJack:
         self.Again['state'] = 'disabled'
         self.Again['bg'] = 'gray'
 
-    def setupButton(self):
-        self.B50 = Button(self.window,text="Bet 50", width=6,height=1, font=self.fontstyle2,command=self.pressedB50)
-        self.B50.place(x=50,y=500)
-        self.B10 = Button(self.window,text="Bet 10", width=6,height=1, font=self.fontstyle2,command=self.pressedB10)
-        self.B10.place(x=150,y=500)
-        self.B1 = Button(self.window,text="Bet 1", width=6,height=1, font=self.fontstyle2,command=self.pressedB1)
-        self.B1.place(x=250,y=500)
-        self.Hit = Button(self.window,text="Hit", width=6,height=1, font=self.fontstyle2,command=self.pressedHit)
-        self.Hit.place(x=400,y=500)
-        self.Stay = Button(self.window,text="Stay", width=6,height=1, font=self.fontstyle2,command=self.pressedStay)
-        self.Stay.place(x=500,y=500)
-        self.Deal = Button(self.window,text="Deal", width=6,height=1, font=self.fontstyle2,command=self.pressedDeal)
-        self.Deal.place(x=600,y=500)
-        self.Again = Button(self.window,text="Again", width=6,height=1, font=self.fontstyle2,command=self.pressedAgain)
-        self.Again.place(x=700,y=500)
-        self.Hit['state'] = 'disabled'
-        self.Hit['bg'] = 'gray'
-        self.Stay['state'] = 'disabled'
-        self.Stay['bg'] = 'gray'
-        self.Deal['state'] = 'disabled'
-        self.Deal['bg'] = 'gray'
-        self.Again['state'] = 'disabled'
-        self.Again['bg'] = 'gray'
-
     def setupLabel(self):
         self.LbetMoney = Label(text="$0",width=4,height=1,font=self.fontstyle,bg="green",fg="cyan")
         self.LbetMoney.place(x=200,y=450)
@@ -157,8 +133,8 @@ class BlackJack:
             PlaySound('sounds/win.wav', SND_FILENAME)
         else:
             self.Lstatus.configure(text="Sorry you lost!")
-            PlaySound('sounds/wrong.wav', SND_FILENAME)    def checkWinner(self):
-        #…
+            PlaySound('sounds/wrong.wav', SND_FILENAME)
+
         self.betMoney = 0
         self.LplayerMoney.configure(text="You have $"+str(self.playerMoney))
         self.LbetMoney.configure(text="$"+str(self.betMoney))
